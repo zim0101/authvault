@@ -91,6 +91,8 @@ And finally run the project
 docker compose up
 ```
 
+Now open your browser and visit: ```http://localhost:5000/```
+
 ## Logs
 ```shell
 docker compose logs authvault-app
