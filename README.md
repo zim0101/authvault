@@ -34,6 +34,10 @@ Clone the repository
 git clone https://github.com/zim0101/authvault.git
 ```
 
+Get into the repository
+```shell
+cd authvault
+```
 Change the .env.example to .env
 ```shell
 mv .env.example .env
