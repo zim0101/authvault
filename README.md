@@ -18,18 +18,18 @@ This project is built with Spring Boot, Spring Security, Spring Data JPA, Postgr
 - **Docker:** You only need docker and docker compose.
 
 ## How To Run?
-### Clone the repository
+
+### To run and go through the project
 ```shell
 git clone https://github.com/zim0101/authvault.git
 ```
-### To run and go through the project
 ```shell
 docker compose up --build -d
 ```
 
 ### For development:
 
-### Clone the repository
+Clone the repository
 ```shell
 git clone https://github.com/zim0101/authvault.git
 ```
