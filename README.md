@@ -21,7 +21,7 @@ This project is built with Spring Boot, Spring Security, Spring Data JPA, Postgr
 
 ## How To Run?
 
-### To run and go through the project
+### 1. To run and go through the project
 ```shell
 git clone https://github.com/zim0101/authvault.git
 ```
@@ -29,7 +29,7 @@ git clone https://github.com/zim0101/authvault.git
 docker compose up --build -d
 ```
 
-### For development:
+### 2. For development:
 
 Clone the repository
 ```shell
