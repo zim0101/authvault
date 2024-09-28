@@ -84,7 +84,7 @@ And finally run the containers.
 docker compose up
 ```
 
-Now open your browser and visit: ```http://localhost:5000/``` or replace the port with the one you used in `.env`
+Now open your browser and visit: ```http://localhost:5000/``` again or replace the port with the one you used in `.env`
 
 If you ran the containers in detached mode, and you want to see the application log:
 
