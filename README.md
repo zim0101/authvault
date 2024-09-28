@@ -1,18 +1,20 @@
-# [ Authvault ] - Spring Boot Authentication Boilerplate
+# [ Authvault ] 
+## Spring Boot Authentication Boilerplate
 
 A boilerplate Spring Boot application for implementing authentication with features such as social login, SSO, and user role management. 
-This project is built with Spring Boot, Spring Security, Spring Data JPA, PostgreSQL, and Thymeleaf.
+This project is built with Spring Boot, Spring Security, Spring Data JPA, PostgresSQL, and Thymeleaf.
 
 
 ## Features
-### Completed
-1. Basic sign in and sign up
-
-### TODO
-1. Social Login (Google)
-2. Single Sign On (SSO)
-3. Admin and User Dashboard
-4. User, Role and Permission Management
+- [x] Add form based login registration.
+- [x] Add Social Login (Google, GitHub).
+- [ ] Implement Email verification
+- [ ] Implement 2FA
+- [x] Create admin dashboard.
+- [ ] Build a user, role, and permission management module.
+- [ ] Add more test coverage, including security and integration tests.
+- [ ] Improve logging and exception handling.
+- [ ] Implement Single Sign-On (SSO).
 
 ## Requirements
 - **Docker:** You only need docker and docker compose.
@@ -40,45 +42,37 @@ cd authvault
 ```
 Change the .env.example to .env
 ```shell
-mv .env.example .env
+cp .env.example .env
 ```
 
-Update your .env file like the below code, but please use appropiate database name and please...please use a strong 
-password :-) 
+Before running the application, update your .env file with the following environment variables. 
+Make sure to use an appropriate database name and, most importantly, 
+choose a strong password! 🚨 Don't forget: .env should always remain in .gitignore—never commit sensitive information!
+
+Many of the variables below come with default values. However, you'll need to customize certain fields according 
+to your setup:
+
+* **Database:** Update `POSTGRES_USER`, `POSTGRES_DB`, and `POSTGRES_PASSWORD` with your database credentials.
+* **Server Port:** Modify the `SERVER_PORT` as needed. 
+* **Encryption Key:** Set a strong `ENCRYPTION_SECRET_KEY` for secure data encryption.
+* **OAuth Credentials:** Get your Google and GitHub client IDs and secrets from their respective developer accounts and 
+  fill them in `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`.
 ```
+APPLICATION_NAME=AuthVault
+ENCRYPTION_SECRET_KEY=MySecretKey12345
+SERVER_PORT=5000
+SPRING_DATASOURCE_HOST=postgres-db
+POSTGRES_PORT=5432
 POSTGRES_DB=authvault_db
 POSTGRES_USER=postgres
-POSTGRES_PASSWORD=root
+POSTGRES_PASSWORD=your_password
+SPRING_DATASOURCE_URL=jdbc:postgresql://${SPRING_DATASOURCE_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
 ```
-Create a ```application-dev.properties``` file and update the values. For example:
-
-```
-spring.application.name=AuthVault
-
-# SERVER
-server.port=${SERVER_PORT:5000}
-encryption.secret-key=${ENCRYPTION_SECRET_KEY:MySecretKey12345}
-
-# DATABASE
-spring.jpa.database=POSTGRESQL
-spring.sql.init.platform=postgres
-spring.datasource.url=jdbc:postgresql://${SPRING_DATASOURCE_HOST:localhost}:${SPRING_DATASOURCE_PORT:5432}/${POSTGRES_DB:authvault_db}
-spring.datasource.username=${POSTGRES_USER:postgres}
-spring.datasource.password=${POSTGRES_PASSWORD:root}
-
-# Always initialize the DB with data.sql.
-# TODO: Turn off in production
-spring.jpa.defer-datasource-initialization=true
-spring.sql.init.mode=always
-spring.jpa.show-sql=true
-spring.jpa.generate-ddl=true
-spring.jpa.hibernate.ddl-auto=create-drop
-spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
-spring.mvc.hiddenmethod.filter.enabled=true
-
-logging.level.org.springframework.web.socket=DEBUG
-
-```
+You will also have a ```application-dev.properties``` file. Use this file only for development.
 
 Run the project
 ```shell
@@ -95,7 +89,7 @@ And finally run the project
 docker compose up
 ```
 
-Now open your browser and visit: ```http://localhost:5000/```
+Now open your browser and visit: ```http://localhost:5000/``` or replace the port with the one you used in `.env`
 
 ## Logs
 ```shell
@@ -112,14 +106,6 @@ Contributions are welcome! Here's how you can help:
 5. Open a pull request.
 
 Please ensure your code follows proper coding conventions and is well-tested.
-
-## Roadmap
-1. [ ] Add Social Login (Google).
-2. [ ] Implement Single Sign-On (SSO).
-3. [ ] Create admin and user-specific dashboards.
-4. [ ] Build a user, role, and permission management module.
-5. [ ] Add more test coverage, including security and integration tests.
-6. [ ] Improve logging and exception handling.
 
 ## License
 This project is licensed under the MIT License
