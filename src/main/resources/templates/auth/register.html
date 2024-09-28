@@ -15,7 +15,7 @@
             <div class="col-12 col-md-6 bsb-tpl-bg-platinum">
                 <div class="d-flex flex-column justify-content-between h-100 p-3 p-md-4 p-xl-5">
                     <h3 class="m-0">Welcome!</h3>
-                    <img class="img-fluid rounded mx-auto my-4" loading="lazy" th:src="@{/assets/images/logo/authvault.png}" width="245" height="80" alt="BootstrapBrain Logo">
+                    <img class="img-fluid rounded mx-auto my-4" loading="lazy" th:src="@{/assets/images/logo/security.svg}" width="245" height="80" alt="BootstrapBrain Logo">
                     <p class="mb-0">Are you a member?
                         <a th:href="@{/login}" class="link-secondary text-decoration-none">Log in</a></p>
                 </div>
@@ -44,7 +44,8 @@
                     >
                         <div class="row gy-3 gy-md-4 overflow-hidden">
                             <div class="col-12">
-                                <label for="username" class="form-label">Username</label>
+                                <label for="username" class="form-label">Username
+                                    <span class="text-danger">*</span></label>
                                 <input
                                         class="form-control"
                                         id="username"
@@ -57,7 +58,7 @@
                                    th:if="${#fields.hasErrors('username')}"></p>
                             </div>
                             <div class="col-12">
-                                <label for="name" class="form-label">Name</label>
+                                <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
                                 <input
                                         class="form-control"
                                         id="name"
@@ -70,7 +71,7 @@
                                    th:if="${#fields.hasErrors('name')}"></p>
                             </div>
                             <div class="col-12">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                                 <input
                                         class="form-control"
                                         id="email"
@@ -83,7 +84,8 @@
                                    th:if="${#fields.hasErrors('email')}"></p>
                             </div>
                             <div class="col-12">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="password" class="form-label">Password
+                                    <span class="text-danger">*</span></label>
                                 <input
                                         class="form-control"
                                         id="password"
