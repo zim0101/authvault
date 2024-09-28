@@ -10,6 +10,7 @@ RUN mvn dependency:go-offline -B
 
 # Copy the rest of the project files and build the application
 COPY src ./src
+COPY .env .env
 RUN mvn clean package -DskipTests
 
 # Use OpenJDK 21 to run the Spring Boot application
@@ -21,8 +22,8 @@ WORKDIR /app
 # Copy the built jar from the build stage
 COPY --from=build /app/target/authvault-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the port that the application runs on
-EXPOSE 5000
+# Copy the .env file from the build stage
+COPY --from=build /app/.env .env
 
 # Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
