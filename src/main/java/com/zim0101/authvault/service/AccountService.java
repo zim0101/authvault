@@ -1,14 +1,13 @@
 package com.zim0101.authvault.service;
 
 import com.zim0101.authvault.model.Account;
+import com.zim0101.authvault.model.enums.AuthProvider;
 import com.zim0101.authvault.model.enums.Role;
 import com.zim0101.authvault.repository.AccountRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-
 import java.util.Set;
 
 @Service
@@ -22,25 +21,28 @@ public class AccountService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Account findById(Integer id) {
-        return accountRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Account not found!"));
+    public boolean accountExistWithEmail(String email) {
+        return accountRepository.findByEmail(email).isPresent();
     }
 
     public Account findByEmail(String email) {
-        return accountRepository.findByEmail(email);
-    }
-
-    public boolean accountExistWithEmail(String email) {
-        return findByEmail(email) != null;
+        return accountRepository.findByEmail(email).orElse(null);
     }
 
     @Transactional
     public void saveAccount(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
+        account.setAuthProvider(AuthProvider.LOCAL);
+
         if (account.getRoles() == null) {
             account.setRoles(Set.of(Role.USER));
         }
+
+        accountRepository.save(account);
+    }
+
+    @Transactional
+    public void saveOrUpdateSocialAccount(Account account) {
         accountRepository.save(account);
     }
 

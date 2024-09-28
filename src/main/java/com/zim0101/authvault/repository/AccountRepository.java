@@ -12,10 +12,12 @@ import java.util.Optional;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Integer> {
-    Optional<Account> findByUsername(String username);
+    Optional<Account> findByEmail(String email);
 
-    Account findByEmail(String email);
+    Optional<Account> findByUsername(String username);
 
     @Query("SELECT a FROM Account a JOIN a.roles r WHERE r = :role")
     List<Account> findByRole(@Param("role") Role role);
+
+    Optional<Account> findByAuthProviderId(String authProviderId);
 }

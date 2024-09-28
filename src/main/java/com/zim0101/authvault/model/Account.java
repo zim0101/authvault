@@ -1,17 +1,20 @@
 package com.zim0101.authvault.model;
 
 
+import com.zim0101.authvault.model.enums.AuthProvider;
 import com.zim0101.authvault.model.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Account implements Serializable {
 
     @Id
@@ -20,20 +23,9 @@ public class Account implements Serializable {
     private Integer id;
 
     @NotNull
-    @NotEmpty
-    @Size(max = 100)
-    private String username;
-
     @NotBlank
-    @Size(max = 60)
-    private String firstName;
-
-    @NotBlank
-    @Size(max = 20)
-    private String lastName;
-
-    @Transient
-    private String fullName;
+    @Size(min = 1, max = 255)
+    private String name;
 
     @NotNull
     @NotBlank
@@ -41,21 +33,33 @@ public class Account implements Serializable {
     @Email
     private String email;
 
+    @NotNull
+    @NotBlank
+    @Column(unique = true)
+    private String username;
+
     @Size(max = 128)
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*()]).{8,}$",
             message = "Password must be 8 characters long and combination of " +
                     "uppercase letters, lowercase letters, numbers, special characters.")
+    @Column(unique = true)
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
+
+    private String authProviderId;
+
     private Boolean disabled = false;
 
     private Boolean deleted = false;
 
     @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
@@ -64,14 +68,20 @@ public class Account implements Serializable {
     public Account() {
     }
 
-    public Account(Integer id, String username, String firstName, String lastName, String fullName, String email,
-                   String password, Set<Role> roles, Boolean disabled, Boolean deleted, LocalDateTime createdAt,
+    public Account(Integer id,
+                   String username,
+                   String firstName,
+                   String lastName,
+                   String fullName,
+                   String email,
+                   String password,
+                   Set<Role> roles,
+                   Boolean disabled,
+                   Boolean deleted,
+                   LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
         this.id = id;
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.fullName = fullName;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.roles = roles;
@@ -81,12 +91,20 @@ public class Account implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getId() {
-        return id;
+    public AuthProvider getAuthProvider() {
+        return authProvider;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAuthProvider(AuthProvider authProvider) {
+        this.authProvider = authProvider;
+    }
+
+    public String getAuthProviderId() {
+        return authProviderId;
+    }
+
+    public void setAuthProviderId(String authProviderId) {
+        this.authProviderId = authProviderId;
     }
 
     public String getUsername() {
@@ -97,20 +115,20 @@ public class Account implements Serializable {
         this.username = username;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public Integer getId() {
+        return id;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getName() {
+        return name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -169,7 +187,20 @@ public class Account implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public String getFullName() {
-        return getFirstName() + " " + getLastName();
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", roles=" + roles +
+                ", authProvider=" + authProvider +
+                ", authProviderId='" + authProviderId + '\'' +
+                ", disabled=" + disabled +
+                ", deleted=" + deleted +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

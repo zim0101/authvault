@@ -1,5 +1,6 @@
 package com.zim0101.authvault.configuration;
 
+import com.zim0101.authvault.service.oauth2.OAuthAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +20,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
+    private final OAuthAuthenticationSuccessHandler oAuthAuthenticationSuccessHandler;
 
-    public SecurityConfiguration(UserDetailsService userDetailsService) {
+    public SecurityConfiguration(UserDetailsService userDetailsService,
+                                 OAuthAuthenticationSuccessHandler oAuthAuthenticationSuccessHandler) {
         this.userDetailsService = userDetailsService;
+        this.oAuthAuthenticationSuccessHandler = oAuthAuthenticationSuccessHandler;
     }
 
     @Bean
@@ -32,27 +36,28 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorize) ->
-                        authorize
-                                .requestMatchers("/images/**", "/", "/register/**", "/oauth/**")
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated()
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/", "/assets/**", "/register/**", "/oauth/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
-                .formLogin(
-                        form -> form
-                                .loginPage("/login")
-                                .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/dashboard")
-                                .permitAll()
-                                .failureUrl("/login?error=true")
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/dashboard")
+                        .permitAll()
+                        .failureUrl("/login?error=true")
                 )
-                .logout(
-                        logout -> logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .permitAll()
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .successHandler(oAuthAuthenticationSuccessHandler)
                 )
-                .csrf((csrf) -> csrf
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .permitAll()
+                )
+                .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(new XorCsrfTokenRequestAttributeHandler())
                 )

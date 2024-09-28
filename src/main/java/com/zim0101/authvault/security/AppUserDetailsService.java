@@ -18,12 +18,10 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        Account account = accountRepository.findByUsername(usernameOrEmail).orElseGet(
-                () -> accountRepository.findByEmail(usernameOrEmail));
+        Account account = accountRepository.findByUsername(usernameOrEmail)
+                .or(() -> accountRepository.findByEmail(usernameOrEmail))
+                .orElseThrow(() -> new UsernameNotFoundException("User " + usernameOrEmail + "is not found"));
 
-        if (account == null) {
-            throw new UsernameNotFoundException("User " + usernameOrEmail + "is not found");
-        }
         String[] roles = account.getRoles()
                 .stream().map(Enum::name).toArray(String[]::new);
 
