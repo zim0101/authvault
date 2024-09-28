@@ -41,8 +41,6 @@ public class GithubUserHandler implements OAuth2UserHandler {
         account.setAuthProvider(AuthProvider.GITHUB);
         account.setAuthProviderId(id);
 
-
-
         accountService.saveOrUpdateSocialAccount(account);
     }
 }

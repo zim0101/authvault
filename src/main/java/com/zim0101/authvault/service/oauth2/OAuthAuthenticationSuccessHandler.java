@@ -54,6 +54,5 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
         }
 
         new DefaultRedirectStrategy().sendRedirect(request, response, "/dashboard");
-
     }
 }

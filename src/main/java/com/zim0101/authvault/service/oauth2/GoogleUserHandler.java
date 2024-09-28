@@ -42,8 +42,6 @@ public class GoogleUserHandler implements OAuth2UserHandler {
         account.setAuthProvider(AuthProvider.GOOGLE);
         account.setAuthProviderId(sub);
 
-        logger.info("account: {}", account.toString());
-
         accountService.saveOrUpdateSocialAccount(account);
     }
 }
