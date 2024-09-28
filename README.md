@@ -68,20 +68,25 @@ Run the project
 ```shell
 docker compose up --build -d
 ```
+**That's it!!** 
 
-After changing the source code or adding new features, build the spring boot app.
+Now open your browser and visit: ```http://localhost:5000/``` or replace the port with the one you used in `.env`
+
+## Further Development
+
+If you need to update the code or add some features, build the spring boot app.
 ```shell
 docker compose build authvault-app
 ```
 
-And finally run the project
+And finally run the containers.
 ```shell
 docker compose up
 ```
 
 Now open your browser and visit: ```http://localhost:5000/``` or replace the port with the one you used in `.env`
 
-If you ran the containers in detached mode and you want to see the application log:
+If you ran the containers in detached mode, and you want to see the application log:
 
 ```shell
 docker compose logs authvault-app
