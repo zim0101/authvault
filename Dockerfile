@@ -1,14 +1,13 @@
 # Use Maven to build the project with Java 21 (via eclipse-temurin)
 FROM maven:3.9.4-eclipse-temurin-21 AS build
 
-# Set a working directory
 WORKDIR /app
 
-# Copy the pom.xml and download dependencies
+# Copy the pom.xml first to leverage Docker cache
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
-# Copy the rest of the project files and build the application
+# Now copy the application source code
 COPY src ./src
 COPY .env .env
 RUN mvn clean package -DskipTests
