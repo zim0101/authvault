@@ -69,13 +69,13 @@ public class Account implements Serializable {
     }
 
     public Account(Integer id,
-                   String username,
-                   String firstName,
-                   String lastName,
-                   String fullName,
+                   String name,
                    String email,
+                   String username,
                    String password,
                    Set<Role> roles,
+                   AuthProvider authProvider,
+                   String authProviderId,
                    Boolean disabled,
                    Boolean deleted,
                    LocalDateTime createdAt,
@@ -83,36 +83,15 @@ public class Account implements Serializable {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.username = username;
         this.password = password;
         this.roles = roles;
+        this.authProvider = authProvider;
+        this.authProviderId = authProviderId;
         this.disabled = disabled;
         this.deleted = deleted;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public AuthProvider getAuthProvider() {
-        return authProvider;
-    }
-
-    public void setAuthProvider(AuthProvider authProvider) {
-        this.authProvider = authProvider;
-    }
-
-    public String getAuthProviderId() {
-        return authProviderId;
-    }
-
-    public void setAuthProviderId(String authProviderId) {
-        this.authProviderId = authProviderId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public Integer getId() {
@@ -139,6 +118,14 @@ public class Account implements Serializable {
         this.email = email;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -153,6 +140,22 @@ public class Account implements Serializable {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public AuthProvider getAuthProvider() {
+        return authProvider;
+    }
+
+    public void setAuthProvider(AuthProvider authProvider) {
+        this.authProvider = authProvider;
+    }
+
+    public String getAuthProviderId() {
+        return authProviderId;
+    }
+
+    public void setAuthProviderId(String authProviderId) {
+        this.authProviderId = authProviderId;
     }
 
     public Boolean getDisabled() {
