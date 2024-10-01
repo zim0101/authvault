@@ -54,6 +54,8 @@ public class Account implements Serializable {
 
     private String authProviderId;
 
+    private Boolean emailVerified = false;
+
     private Boolean disabled = false;
 
     private Boolean deleted = false;
@@ -76,6 +78,7 @@ public class Account implements Serializable {
                    Set<Role> roles,
                    AuthProvider authProvider,
                    String authProviderId,
+                   Boolean emailVerified,
                    Boolean disabled,
                    Boolean deleted,
                    LocalDateTime createdAt,
@@ -88,6 +91,7 @@ public class Account implements Serializable {
         this.roles = roles;
         this.authProvider = authProvider;
         this.authProviderId = authProviderId;
+        this.emailVerified = emailVerified;
         this.disabled = disabled;
         this.deleted = deleted;
         this.createdAt = createdAt;
@@ -140,6 +144,14 @@ public class Account implements Serializable {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 
     public AuthProvider getAuthProvider() {

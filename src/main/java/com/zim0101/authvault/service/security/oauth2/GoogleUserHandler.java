@@ -1,9 +1,9 @@
-package com.zim0101.authvault.service.oauth2;
+package com.zim0101.authvault.service.security.oauth2;
 
 import com.zim0101.authvault.model.Account;
 import com.zim0101.authvault.model.enums.AuthProvider;
 import com.zim0101.authvault.model.enums.Role;
-import com.zim0101.authvault.service.AccountService;
+import com.zim0101.authvault.service.business.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

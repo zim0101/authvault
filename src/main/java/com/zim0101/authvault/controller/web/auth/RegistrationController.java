@@ -1,7 +1,7 @@
 package com.zim0101.authvault.controller.web.auth;
 
 import com.zim0101.authvault.model.Account;
-import com.zim0101.authvault.service.AccountService;
+import com.zim0101.authvault.service.business.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;

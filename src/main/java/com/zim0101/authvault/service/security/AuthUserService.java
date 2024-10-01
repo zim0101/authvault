@@ -1,4 +1,4 @@
-package com.zim0101.authvault.service;
+package com.zim0101.authvault.service.security;
 
 import com.zim0101.authvault.model.Account;
 import com.zim0101.authvault.repository.AccountRepository;

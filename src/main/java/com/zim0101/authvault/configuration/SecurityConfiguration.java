@@ -1,6 +1,8 @@
 package com.zim0101.authvault.configuration;
 
-import com.zim0101.authvault.service.oauth2.OAuthAuthenticationSuccessHandler;
+import com.zim0101.authvault.service.security.auth.FormBasedAuthenticationFailureHandler;
+import com.zim0101.authvault.service.security.auth.FormBasedAuthenticationHandler;
+import com.zim0101.authvault.service.security.oauth2.OAuthAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +22,17 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
+    private final FormBasedAuthenticationHandler formBasedAuthenticationHandler;
+    private final FormBasedAuthenticationFailureHandler formBasedAuthenticationFailureHandler;
     private final OAuthAuthenticationSuccessHandler oAuthAuthenticationSuccessHandler;
 
     public SecurityConfiguration(UserDetailsService userDetailsService,
+                                 FormBasedAuthenticationHandler formBasedAuthenticationHandler,
+                                 FormBasedAuthenticationFailureHandler formBasedAuthenticationFailureHandler,
                                  OAuthAuthenticationSuccessHandler oAuthAuthenticationSuccessHandler) {
         this.userDetailsService = userDetailsService;
+        this.formBasedAuthenticationHandler = formBasedAuthenticationHandler;
+        this.formBasedAuthenticationFailureHandler = formBasedAuthenticationFailureHandler;
         this.oAuthAuthenticationSuccessHandler = oAuthAuthenticationSuccessHandler;
     }
 
@@ -44,10 +52,9 @@ public class SecurityConfiguration {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/dashboard")
                         .permitAll()
-                        .failureUrl("/login?error=true")
+                        .successHandler(formBasedAuthenticationHandler)
+                        .failureHandler(formBasedAuthenticationFailureHandler)
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")

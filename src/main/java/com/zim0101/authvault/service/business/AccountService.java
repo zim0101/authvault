@@ -1,4 +1,4 @@
-package com.zim0101.authvault.service;
+package com.zim0101.authvault.service.business;
 
 import com.zim0101.authvault.model.Account;
 import com.zim0101.authvault.model.enums.AuthProvider;
@@ -14,11 +14,14 @@ import java.util.Set;
 public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     public AccountService(AccountRepository accountRepository,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder,
+                          EmailService emailService) {
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     public boolean accountExistWithEmail(String email) {
@@ -57,6 +60,8 @@ public class AccountService {
         }
 
         saveAccount(account);
+
+        emailService.sendVerificationEmail(account.getEmail());
 
         return "redirect:/login";
     }

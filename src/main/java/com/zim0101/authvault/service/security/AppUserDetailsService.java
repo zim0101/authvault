@@ -1,5 +1,6 @@
-package com.zim0101.authvault.security;
+package com.zim0101.authvault.service.security;
 
+import com.zim0101.authvault.exception.EmailNotVerifiedException;
 import com.zim0101.authvault.model.Account;
 import com.zim0101.authvault.repository.AccountRepository;
 import org.springframework.security.core.userdetails.User;
@@ -17,10 +18,14 @@ public class AppUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException, EmailNotVerifiedException {
         Account account = accountRepository.findByUsername(usernameOrEmail)
                 .or(() -> accountRepository.findByEmail(usernameOrEmail))
                 .orElseThrow(() -> new UsernameNotFoundException("User " + usernameOrEmail + "is not found"));
+
+        if (!account.getEmailVerified()) {
+            throw new EmailNotVerifiedException("Email is not verified. Please verify your email to login.");
+        }
 
         String[] roles = account.getRoles()
                 .stream().map(Enum::name).toArray(String[]::new);

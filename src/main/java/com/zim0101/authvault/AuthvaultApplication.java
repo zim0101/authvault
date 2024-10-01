@@ -36,6 +36,7 @@ public class AuthvaultApplication implements CommandLineRunner {
 		account.setEmail("admin@gmail.com");
 		account.setPassword(passwordEncoder.encode("admin"));
 		account.setRoles(Set.of(Role.ADMIN));
+		account.setEmailVerified(true);
 		account.setAuthProvider(AuthProvider.LOCAL);
 
 		accountRepository.save(account);
