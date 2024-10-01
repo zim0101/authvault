@@ -12,6 +12,19 @@ services:
       - postgres-data:/var/lib/postgresql/data
     restart: no
 
+  activemq:
+    image: rmohr/activemq:latest
+    container_name: activemq
+    environment:
+      ACTIVEMQ_ADMIN_LOGIN: ${ACTIVEMQ_USER}
+      ACTIVEMQ_ADMIN_PASSWORD: ${ACTIVEMQ_PASSWORD}
+    ports:
+      - "${ACTIVEMQ_PORT}:${ACTIVEMQ_PORT}"
+      - "${ACTIVEMQ_WEB_PORT}:${ACTIVEMQ_WEB_PORT}"
+    volumes:
+      - activemq-data:/var/activemq/data
+    restart: always
+
   authvault-app:
     build: .
     image: authvault_app:latest
@@ -24,7 +37,9 @@ services:
       - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:
       - postgres-db
+      - activemq
     restart: no
 
 volumes:
   postgres-data:
+  activemq-data:
