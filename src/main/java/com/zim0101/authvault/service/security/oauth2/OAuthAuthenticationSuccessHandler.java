@@ -1,5 +1,6 @@
 package com.zim0101.authvault.service.security.oauth2;
 
+import com.zim0101.authvault.model.Account;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -53,6 +54,6 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
             throw new OAuth2AuthenticationException(new OAuth2Error("user_processing_error", "Error processing user data", null));
         }
 
-        new DefaultRedirectStrategy().sendRedirect(request, response, "/dashboard");
+        new DefaultRedirectStrategy().sendRedirect(request, response, "/user/dashboard");
     }
 }

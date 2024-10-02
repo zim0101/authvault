@@ -45,7 +45,11 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/assets/**", "/register/**", "/oauth/**")
+                        .requestMatchers("/",
+                                "/assets/**",
+                                "/register/**",
+                                "/oauth/**",
+                                "/email-verification/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()

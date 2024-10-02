@@ -67,6 +67,9 @@ public class Account implements Serializable {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    private EmailVerificationToken emailVerificationToken;
+
     public Account() {
     }
 

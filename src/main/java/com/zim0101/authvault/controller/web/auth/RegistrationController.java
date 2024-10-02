@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class RegistrationController {
@@ -37,7 +38,9 @@ public class RegistrationController {
     }
 
     @PostMapping("/register/save")
-    public String register(@Valid @ModelAttribute Account account, BindingResult result) {
-        return accountService.register(account, result);
+    public String register(@Valid @ModelAttribute Account account,
+                           BindingResult result,
+                           RedirectAttributes redirectAttributes) {
+        return accountService.register(account, result, redirectAttributes);
     }
 }

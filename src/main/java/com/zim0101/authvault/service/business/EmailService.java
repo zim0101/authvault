@@ -47,11 +47,11 @@ public class EmailService {
         }
     }
 
-    public void sendVerificationEmail(String receiverEmail) {
+    public void sendVerificationEmail(String receiverEmail, String emailVerificationUrl) {
         EmailDto emailDto = new EmailDto();
         emailDto.setMailTo(receiverEmail);
         emailDto.setMailSubject("Verify Your Email");
-        emailDto.setMailContent("");
+        emailDto.setMailContent("Click here to verify your email: " + emailVerificationUrl);
 
         emailVerificationJobPublisher.publishMessage(emailDto);
     }
