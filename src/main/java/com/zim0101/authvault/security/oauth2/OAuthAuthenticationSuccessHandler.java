@@ -1,6 +1,6 @@
-package com.zim0101.authvault.service.security.oauth2;
+package com.zim0101.authvault.security.oauth2;
 
-import com.zim0101.authvault.model.Account;
+import com.zim0101.authvault.service.business.ToastMessageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -22,36 +22,40 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
     Logger logger = LoggerFactory.getLogger(OAuthAuthenticationSuccessHandler.class);
 
     private final Map<String, OAuth2UserHandler> oauthUserHandlers;
+    private final ToastMessageService toastMessageService;
 
-    public OAuthAuthenticationSuccessHandler(Map<String, OAuth2UserHandler> oauthUserHandlers) {
+    public OAuthAuthenticationSuccessHandler(Map<String, OAuth2UserHandler> oauthUserHandlers,
+                                             ToastMessageService toastMessageService) {
         this.oauthUserHandlers = oauthUserHandlers;
+        this.toastMessageService = toastMessageService;
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException {
+        String toastMessage;
 
         OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
         String authorizedClientRegistrationId = oAuth2AuthenticationToken.getAuthorizedClientRegistrationId();
         OAuth2User user = oAuth2AuthenticationToken.getPrincipal();
 
         if (authorizedClientRegistrationId == null) {
-            logger.error("Authorized client is null");
-            throw new OAuth2AuthenticationException(new OAuth2Error("invalid_client", "Authorized client is null", null));
+            toastMessage = toastMessageService.getLocalizedErrorMessage("error.oauth2_client_is_null");
+            throw new OAuth2AuthenticationException(toastMessage);
         }
 
         OAuth2UserHandler handler = oauthUserHandlers.get(authorizedClientRegistrationId.toLowerCase());
         if (handler == null) {
-            logger.error("Unsupported OAuth provider: {}", authorizedClientRegistrationId);
-            throw new OAuth2AuthenticationException(new OAuth2Error("invalid_client", "Unsupported OAuth provider", null));
+            toastMessage = toastMessageService.getLocalizedErrorMessage("error.oauth2_unsupported_provider");
+            throw new OAuth2AuthenticationException(toastMessage);
         }
 
         try {
             handler.handleUser(user);
         } catch (Exception e) {
-            logger.error("Error handling OAuth user", e);
-            throw new OAuth2AuthenticationException(new OAuth2Error("user_processing_error", "Error processing user data", null));
+            toastMessage = toastMessageService.getLocalizedErrorMessage("error.oauth2_user_processing_error");
+            throw new OAuth2AuthenticationException(toastMessage);
         }
 
         new DefaultRedirectStrategy().sendRedirect(request, response, "/user/dashboard");

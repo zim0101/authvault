@@ -1,4 +1,4 @@
-package com.zim0101.authvault.service.security;
+package com.zim0101.authvault.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

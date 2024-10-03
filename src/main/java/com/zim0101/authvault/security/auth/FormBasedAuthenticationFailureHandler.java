@@ -1,4 +1,4 @@
-package com.zim0101.authvault.service.security.auth;
+package com.zim0101.authvault.security.auth;
 
 import com.zim0101.authvault.exception.EmailNotVerifiedException;
 import jakarta.servlet.ServletException;

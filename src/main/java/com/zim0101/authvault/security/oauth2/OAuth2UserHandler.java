@@ -1,4 +1,4 @@
-package com.zim0101.authvault.service.security.oauth2;
+package com.zim0101.authvault.security.oauth2;
 
 import com.zim0101.authvault.model.Account;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

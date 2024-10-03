@@ -7,6 +7,7 @@ import com.zim0101.authvault.model.EmailVerificationToken;
 import com.zim0101.authvault.repository.EmailVerificationTokenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.time.LocalDateTime;
@@ -18,9 +19,12 @@ public class EmailVerificationTokenService {
     Logger logger = LoggerFactory.getLogger(EmailVerificationTokenService.class);
 
     private final EmailVerificationTokenRepository emailVerificationTokenRepository;
+    private final ToastMessageService toastMessageService;
 
-    public EmailVerificationTokenService(EmailVerificationTokenRepository emailVerificationTokenRepository) {
+    public EmailVerificationTokenService(EmailVerificationTokenRepository emailVerificationTokenRepository,
+                                         ToastMessageService toastMessageService) {
         this.emailVerificationTokenRepository = emailVerificationTokenRepository;
+        this.toastMessageService = toastMessageService;
     }
 
     private String generateEmailVerificationToken(Account account) {
@@ -36,18 +40,21 @@ public class EmailVerificationTokenService {
         return token;
     }
 
-    public Account getAccountFromValidVerificationEmailToken(String token) throws VerificationTokenDoesNotExistException,
+    public Account getAccountFromValidVerificationEmailToken(String token) throws
+            VerificationTokenDoesNotExistException,
             VerificationTokenExpiredException {
+
         EmailVerificationToken verificationToken = emailVerificationTokenRepository
                 .findByToken(token)
                 .orElseThrow(VerificationTokenDoesNotExistException::new);
-        logger.info("EmailVerificationToken: {}", verificationToken);
+
         boolean isExpired = verificationToken.getExpiryDate().isBefore(LocalDateTime.now());
-        logger.info("isExpired: {}", isExpired);
+
         if (isExpired) {
-            throw new VerificationTokenExpiredException();
+            String toastMessage = toastMessageService
+                    .getLocalizedErrorMessage("error.email.verification_token_expired");
+            throw new VerificationTokenExpiredException(toastMessage);
         }
-        logger.info("Is valid!!!!!!!!!");
 
         return verificationToken.getAccount();
     }

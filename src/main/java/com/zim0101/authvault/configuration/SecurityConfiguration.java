@@ -1,8 +1,8 @@
 package com.zim0101.authvault.configuration;
 
-import com.zim0101.authvault.service.security.auth.FormBasedAuthenticationFailureHandler;
-import com.zim0101.authvault.service.security.auth.FormBasedAuthenticationHandler;
-import com.zim0101.authvault.service.security.oauth2.OAuthAuthenticationSuccessHandler;
+import com.zim0101.authvault.security.auth.FormBasedAuthenticationFailureHandler;
+import com.zim0101.authvault.security.auth.FormBasedAuthenticationHandler;
+import com.zim0101.authvault.security.oauth2.OAuthAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
